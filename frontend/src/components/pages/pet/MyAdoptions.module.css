@@ -1,0 +1,33 @@
+.adoption_row {
+    display: flex;
+    flex-direction: column;
+}
+
+.pet_info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.user_info {
+    width: 100%;
+}
+
+.user_info hr {
+    width: 100%;
+    margin: 1em 0;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    height: 1px;
+}
+
+.user_info p {
+    margin-bottom: 0.5em;
+}
+
+.conclude_text {
+    color: #25b456;
+    font-weight: bold;
+    padding: 15px;
+}
