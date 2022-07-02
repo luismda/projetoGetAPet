@@ -5,6 +5,7 @@ import useFlashMessage from '../../../hooks/useFlashMessage'
 
 import Input from '../../form/Input'
 import RoundedImage from '../../layout/RoundedImage'
+import Loading from '../../layout/Loading'
 
 import formStyles from '../../form/Form.module.css'
 import styles from './Profile.module.css'
@@ -13,6 +14,7 @@ function Profile() {
     const [user, setUser] = useState({})
     const [preview, setPreview] = useState()
     const [token] = useState(localStorage.getItem('token') || '')
+    const [removeLoading, setRemoveLoading] = useState(false)
     const { setFlashMessage } = useFlashMessage()
 
     useEffect(() => {
@@ -22,6 +24,7 @@ function Profile() {
             }
         }).then(response => {
             setUser(response.data)
+            setRemoveLoading(true)
         })
     }, [token])
 
@@ -60,64 +63,69 @@ function Profile() {
 
     return (
         <section>
-            <div className={ styles.profile_header }>
-                <h1>Perfil</h1>
-                {(user.image || preview) && (
-                    <RoundedImage
-                        src={ preview ? 
-                                URL.createObjectURL(preview) : 
-                                `${process.env.REACT_APP_API}images/users/${user.image}` }
-                        alt={ user.name }
-                    />
-                )}
-            </div>
-            <form onSubmit={ handleSubmit } className={ formStyles.form_container }>
-                <Input 
-                    type='file'
-                    name='image'
-                    text='Imagem de perfil'
-                    handleOnChange={ onFileChange }
-                />
-                <Input 
-                    type='email'
-                    name='email'
-                    text='E-mail'
-                    placeholder='Digite o seu e-mail'
-                    value={ user.email || '' }
-                    handleOnChange={ handleChange }
-                />
-                <Input 
-                    type='text'
-                    name='name'
-                    text='Nome'
-                    placeholder='Digite o seu nome'
-                    value={ user.name || '' }
-                    handleOnChange={ handleChange }
-                />
-                <Input 
-                    type='text'
-                    name='phone'
-                    text='Telefone'
-                    placeholder='Digite o seu telefone'
-                    value={ user.phone || '' }
-                    handleOnChange={ handleChange }
-                />
-                <Input 
-                    type='password'
-                    name='password'
-                    text='Senha'
-                    placeholder='Digite a sua senha'
-                    handleOnChange={ handleChange }
-                />
-                <Input 
-                    type='password'
-                    name='confirmpassword'
-                    text='Confirmação de senha'
-                    placeholder='Confirme a sua senha'
-                    handleOnChange={ handleChange }
-                />
-                <input type='submit' value='Editar' />
-            </form>
+            {!removeLoading && <Loading />}
+            {user.name && 
+                <>
+                    <div className={ styles.profile_header }>
+                        <h1>Perfil</h1>
+                        {(user.image || preview) && (
+                            <RoundedImage
+                                src={ preview 
+                                    ? URL.createObjectURL(preview) 
+                                    : `${process.env.REACT_APP_API}images/users/${user.image}` }
+                                alt={ user.name }
+                            />
+                        )}
+                    </div>
+                    <form onSubmit={ handleSubmit } className={ formStyles.form_container }>
+                        <Input 
+                                type='file'
+                                name='image'
+                                text='Imagem de perfil'
+                                handleOnChange={ onFileChange }
+                        />
+                        <Input 
+                                type='email'
+                                name='email'
+                                text='E-mail'
+                                placeholder='Digite o seu e-mail'
+                                value={ user.email || '' }
+                                handleOnChange={ handleChange }
+                        />
+                        <Input 
+                                type='text'
+                                name='name'
+                                text='Nome'
+                                placeholder='Digite o seu nome'
+                                value={ user.name || '' }
+                                handleOnChange={ handleChange }
+                        />
+                        <Input 
+                                type='text'
+                                name='phone'
+                                text='Telefone'
+                                placeholder='Digite o seu telefone'
+                                value={ user.phone || '' }
+                                handleOnChange={ handleChange }
+                        />
+                        <Input 
+                                type='password'
+                                name='password'
+                                text='Senha'
+                                placeholder='Digite a sua senha'
+                                handleOnChange={ handleChange }
+                        />
+                        <Input 
+                                type='password'
+                                name='confirmpassword'
+                                text='Confirmação de senha'
+                                placeholder='Confirme a sua senha'
+                                handleOnChange={ handleChange }
+                        />
+                        <input type='submit' value='Editar' />
+                    </form>
+                </>
+            }
         </section>
     )
 }

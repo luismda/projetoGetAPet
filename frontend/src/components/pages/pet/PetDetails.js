@@ -7,18 +7,22 @@ import { Context } from '../../../context/UserContext'
 
 import useFlashMessage from '../../../hooks/useFlashMessage'
 
+import Loading from '../../layout/Loading'
+
 import styles from './PetDetails.module.css'
 
 function PetDetails() {
     const [pet, setPet] = useState({})
     const { id } = useParams()
     const [token] = useState(localStorage.getItem('token') || '')
+    const [removeLoading, setRemoveLoading] = useState(false)
     const { setFlashMessage } = useFlashMessage()
     const { authenticated } = useContext(Context)
 
     useEffect(() => {
         api.get(`/pets/${id}`).then(response => {
             setPet(response.data.pet)
+            setRemoveLoading(true)
         })
     }, [id])
 
@@ -71,6 +75,7 @@ function PetDetails() {
                         )}
                     </section>
                 )}
+                {!removeLoading && <Loading />}
             </>
         </section>
     )

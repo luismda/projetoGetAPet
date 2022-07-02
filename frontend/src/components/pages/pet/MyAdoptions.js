@@ -3,6 +3,7 @@ import api from '../../../utils/api'
 import { useState, useEffect } from 'react'
 
 import RoundedImage from '../../layout/RoundedImage'
+import Loading from '../../layout/Loading'
 
 import styles from './Dashboard.module.css'
 import adoptionsStyles from './MyAdoptions.module.css'
@@ -10,6 +11,7 @@ import adoptionsStyles from './MyAdoptions.module.css'
 function MyAdoptions() {
     const [pets, setPets] = useState([])
     const [token] = useState(localStorage.getItem('token') || '')
+    const [removeLoading, setRemoveLoading] = useState(false)
 
     useEffect(() => {
         api.get('/pets/myadoptions', {
@@ -19,6 +21,7 @@ function MyAdoptions() {
         })
         .then(response => {
             setPets(response.data.pets)
+            setRemoveLoading(true)
         })
     }, [token])
 
@@ -28,7 +31,9 @@ function MyAdoptions() {
                 <h1>Minhas adoções</h1>
             </div>
             <div className={ styles.petlist_container }>
-                {pets.length > 0 ? (
+                {!pets.length && removeLoading ? (
+                    <p>Você ainda não fez nenhuma adoção.</p>
+                ) : (
                     <>
                         {pets.map((pet, index) => (
                             <div className={ `${styles.petlist_row} ${adoptionsStyles.adoption_row}` } key={ index }>
@@ -47,21 +52,22 @@ function MyAdoptions() {
                                         )}
                                     </div>
                                 </div>
-                                <div className={ adoptionsStyles.user_info }>
-                                    <hr />
-                                    <p>
-                                        <span className='bold'>Ligue para:</span> { pet.user.phone }
-                                    </p>
-                                    <p>
-                                        <span className='bold'>Fale com:</span> { pet.user.name }
-                                    </p>
-                                </div>
+                                {pet.available && 
+                                    <div className={ adoptionsStyles.user_info }>
+                                        <hr />
+                                        <p>
+                                            <span className='bold'>Ligue para:</span> { pet.user.phone }
+                                        </p>
+                                        <p>
+                                            <span className='bold'>Fale com:</span> { pet.user.name }
+                                        </p>
+                                    </div>
+                                }
                             </div>
                         ))}
-                    </>      
-                ) : (
-                    <p>Você ainda não fez nenhuma adoção.</p>
+                    </> 
                 )}
+                {!removeLoading && <Loading />}
             </div>
         </section>
     )

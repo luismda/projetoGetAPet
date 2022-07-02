@@ -1,53 +1,133 @@
 .message {
-    max-width: 60%;
-    width: 30%;
-    padding: 1.5em;
-    border: 1px solid #000;
-    margin: 2em auto 0;
-    text-align: center;
+    padding: 1.7em 3.7em;
+    min-width: 32%;
     position: absolute;
-    left: 0;
     right: 0;
-    transition: 0.5s;
-    animation-name: msgIn;
-    animation-duration: 0.2s;
+    top: 1em;
+    overflow: hidden;
+    border-radius: 5px;
+    border-left: 0.8em solid;
+    opacity: 0;
+    pointer-events: none;
 }
 
-@keyframes msgIn {
+.message.showMessage {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.message.success {
+    background-color: #c4f2d1;
+    border-color: #98ebbb;
+}
+
+.message.error {
+    background-color: #ffe1e2;
+    border-color: #fdbcbd;
+}
+
+.message.show {
+    animation: show_slide 1s ease forwards;
+}
+
+@keyframes show_slide {
     0% {
-        opacity: 0;
-        margin-top: 0;
+        transform: translateX(100%);
     }
-
-    25% {
-        opacity: 25%;
-        margin-top: 0.5em;
+    40% {
+        transform: translateX(-10%);
     }
-
-    50% {
-        opacity: 50%;
-        margin-top: 1em;
+    80% {
+        transform: translateX(0%);
     }
-
-    75% {
-        opacity: 75%;
-        margin-top: 1.5em;
-    }
-
     100% {
-        opacity: 100%;
-        margin-top: 2em;
+        transform: translateX(-10px);
     }
 }
 
-.success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+.message.hide {
+    animation: hide_slide 1s ease forwards;
 }
 
-.error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+@keyframes hide_slide {
+    0% {
+        transform: translateX(-10px);
+    }
+    40% {
+        transform: translateX(0%);
+    }
+    80% {
+        transform: translateX(-10%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.message .icon_type_msg {
+    position: absolute;
+    left: 1.2em;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.8em;
+}
+
+.message.success .icon_type_msg {
+    color: #37c173;
+}
+
+.message.error .icon_type_msg {
+    color: #ff455b;
+}
+
+.message .msg {
+    padding: 0 1.5em 0 1em;
+    font-size: 1.1em;
+}
+
+.message.success .msg {
+    color: #1baf5d;
+}
+
+.message.error .msg {
+    color: #ff7476;
+}
+
+.message .close_btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 2.2em 1.4em;
+    cursor: pointer;
+    transition: 0.4s;
+}
+
+.message.success .close_btn {
+    background-color: #98ebbb;
+}
+
+.message.error .close_btn {
+    background-color: #fdbcbd;
+}
+
+.message.success .close_btn:hover {
+    background-color: #91e7b5;
+}
+
+.message.error .close_btn:hover {
+    background-color: #ffb5b6;
+}
+
+.message .close_btn svg {
+    font-size: 1.4em;
+    line-height: 1em;
+}
+
+.message.success .close_btn svg {
+    color: #37c173;
+}
+
+.message.error .close_btn svg {
+    color: #ff455b;
 }

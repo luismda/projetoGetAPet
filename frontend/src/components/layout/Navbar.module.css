@@ -33,6 +33,10 @@
     border-radius: 5px;
 }
 
+.navbar_logo a {
+    padding: 0;
+}
+
 .navbar li:hover {
     background-color: #16479d;
     color: #FFF;

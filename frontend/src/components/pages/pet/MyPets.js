@@ -6,12 +6,14 @@ import useFlashMessage from '../../../hooks/useFlashMessage'
 import { Link } from 'react-router-dom'
 
 import RoundedImage from '../../layout/RoundedImage'
+import Loading from '../../layout/Loading'
 
 import styles from './Dashboard.module.css'
 
 function MyPets() {
     const [pets, setPets] = useState([])
     const [token] = useState(localStorage.getItem('token') || '')
+    const [removeLoading, setRemoveLoading] = useState(false)
     const { setFlashMessage } = useFlashMessage()
 
     useEffect(() => {
@@ -22,6 +24,7 @@ function MyPets() {
         })
         .then(response => {
             setPets(response.data.pets)
+            setRemoveLoading(true)
         })
     }, [token])
 
@@ -85,34 +88,36 @@ function MyPets() {
                 <Link to='/pet/add'>Cadastrar Pet</Link>
             </div>
             <div className={ styles.petlist_container }>
-                {!pets.length && 
+                {!pets.length && removeLoading ? (
                     <p>Você ainda não cadastrou nenhum pet.</p>
-                }
-                {pets.map(pet => (
-                    <div className={ styles.petlist_row } key={ pet._id }>
-                        <RoundedImage 
-                            src={ `${process.env.REACT_APP_API}images/pets/${pet.images[0]}` }
-                            alt={ pet.name }
-                            width='px75'
-                        />
-                        <span className={ `bold ${ styles.pet_name }` }>{ pet.name }</span>
-                        <div className={ styles.actions }>
-                            {pet.available ? (
-                                <>
-                                    {pet.adopter && (
-                                        <button className={ styles.conclude_btn } onClick={ () => {
-                                            concludeAdoption(pet._id)
-                                        } }>Concluir adoção</button>
-                                    )}
-                                    <Link to={ `/pet/edit/${pet._id}` }>Editar</Link>
-                                    <button onClick={ () => { removePet(pet._id) } } >Excluir</button>
-                                </>
-                            ) : (
-                                <p className={ styles.adopted_text }>Adoção concluída</p>
-                            )}
+                ) : (
+                    pets.map(pet => (
+                        <div className={ styles.petlist_row } key={ pet._id }>
+                            <RoundedImage 
+                                src={ `${process.env.REACT_APP_API}images/pets/${pet.images[0]}` }
+                                alt={ pet.name }
+                                width='px75'
+                            />
+                            <span className={ `bold ${ styles.pet_name }` }>{ pet.name }</span>
+                            <div className={ styles.actions }>
+                                {pet.available ? (
+                                    <>
+                                        {pet.adopter && (
+                                            <button className={ styles.conclude_btn } onClick={ () => {
+                                                concludeAdoption(pet._id)
+                                            } }>Concluir adoção</button>
+                                        )}
+                                        <Link to={ `/pet/edit/${pet._id}` }>Editar</Link>
+                                        <button className={ styles.delete } onClick={ () => { removePet(pet._id) } } >Excluir</button>
+                                    </>
+                                ) : (
+                                    <p className={ styles.adopted_text }>Adoção concluída</p>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
+                {!removeLoading && <Loading />}
             </div>
         </section>
     )

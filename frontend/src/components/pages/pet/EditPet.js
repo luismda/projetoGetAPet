@@ -6,12 +6,14 @@ import { useParams } from 'react-router-dom'
 import useFlashMessage from '../../../hooks/useFlashMessage'
 
 import PetForm from '../../form/PetForm'
+import Loading from '../../layout/Loading'
 
 import styles from './AddPet.module.css'
 
 function EditPet() {
     const [pet, setPet] = useState({})
     const [token] = useState(localStorage.getItem('token') || '')
+    const [removeLoading, setRemoveLoading] = useState(false)
     const { id } = useParams()
     const { setFlashMessage } = useFlashMessage()
 
@@ -22,6 +24,7 @@ function EditPet() {
             }
         }).then(response => {
             setPet(response.data.pet)
+            setRemoveLoading(true)
         })
     }, [token, id])
 
@@ -58,12 +61,15 @@ function EditPet() {
 
     return (
         <section>
-            <div className={ styles.addpet_header }>
-                <h1>Editando o Pet: { pet.name }</h1>
-                <p>Após a edição os dados serão atualizados no sistema</p>
-            </div>
+            {!removeLoading && <Loading />}
             {pet.name && 
-                <PetForm handleSubmit={ updatePet } btnText='Atualizar' petData={ pet } />
+                <>
+                    <div className={ styles.addpet_header }>
+                        <h1>Editando o Pet: { pet.name }</h1>
+                        <p>Após a edição os dados serão atualizados no sistema</p>
+                    </div>
+                    <PetForm handleSubmit={ updatePet } btnText='Atualizar' petData={ pet } />
+                </>
             }
         </section>
     )

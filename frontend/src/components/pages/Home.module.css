@@ -13,9 +13,8 @@
 }
 
 .pet_home_card {
-    width: 22%;
+    min-width: 22%;
     margin: 1.5%;
-    padding: 0.5%;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -28,22 +27,24 @@
     background-size: cover;
     height: 225px;
     width: 100%;
-    margin-bottom: 1.2em;
-    border-radius: 5px;
+    border-radius: 5px 5px 0 0;
+}
+
+.pet_infos {
+    padding: 0.5em 0.5em 2em;
 }
 
 .pet_home_card h3 {
     color: #16479d;
-    margin-bottom: 1em;
     font-size: 1.6em;
     padding: 8px;
 }
 
 .pet_home_card p {
-    margin-bottom: 1em;
+    margin-bottom: 1.6em;
 }
 
-.pet_home_card a {
+.pet_home_card .pet_infos .details_btn {
     text-decoration: none;
     background-color: #ffd400;
     color: #16479d;
@@ -54,13 +55,13 @@
     border-radius: 5px;
 }
 
-.pet_home_card a:hover {
+.pet_home_card .pet_infos .details_btn:hover {
     background-color: #e7c30d;
     color: #FFF;
 }
 
-.adopted_text {
+.pet_home_card .pet_infos .adopted_text {
     color: #25b456;
     font-weight: bold;
-    padding: 15px;
+    margin-bottom: 0;
 }

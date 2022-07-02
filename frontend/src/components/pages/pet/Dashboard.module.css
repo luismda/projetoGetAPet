@@ -69,6 +69,11 @@
     color: #FFF;
 }
 
+.actions button.delete:hover {
+    background-color: #dd364a;
+    border-color: #dd364a;
+}
+
 .actions .conclude_btn {
     color: #25b456;
     border-color: #25b456;
